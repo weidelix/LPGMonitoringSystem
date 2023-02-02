@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LPGMonitoringSystem</title>
+</head>
+<style>
+    body {
+        font-family: Arial;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    main {
+        width: 100%;
+        height: 100%;
+        max-width: 800px;
+        margin: 20px    ;
+        padding: 0px;
+    }
+
+</style>
+<body>
+    <main>
+        <h1>Configuration</h1>
+        <input type="text" placeholder="Contact no."/>
+        <button onclick="sendMessage()">Add</button>
+    </main>
+</body>
+<script>
+    let config = {
+        threshold: 20,
+        contacts: [
+            '09123456789'
+        ],
+    }
+
+    function sendMessage()
+    {
+        fetch('/config', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(config)
+        }).then(response => console.log(response.json().message))
+    }
+</script>
+</html>
