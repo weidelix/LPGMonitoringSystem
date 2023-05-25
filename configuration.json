@@ -1,0 +1,15 @@
+{
+
+    "warning_level": 20,
+    "tank_type": "EC Gas 11KG",
+    "recipients": ["", "", ""],
+    "notify_ext": false,
+    "ext_recipient_number": "",
+    "ext_recipient_message": "",
+    "power_saving_mode": "Balanced",
+    "wifi_name": "LPGMonSys",
+    "wifi_password": "1234567890",
+    "use_custom_weight": true,
+    "custom_tare_weight": 12.3,
+    "custom_gas_weight": 11.0
+}

@@ -1,20 +1,9 @@
-import network
 import gc
+import esp
+import machine
 
-print('Booting...')
+print('LPG Monitoring System')
 
+esp.osdebug(None)
+machine.freq(80000000)
 gc.collect()
-
-ssid = 'Hakdog 2.4'
-password = 'SiopaoSiomai1234_'
-
-station = network.WLAN(network.STA_IF)
-station.active(True)
-station.connect(ssid, password)
-
-
-while not station.isconnected():
-    pass
-
-print('Connection Successful')
-print(station.ifconfig())

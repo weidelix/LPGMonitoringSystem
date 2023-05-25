@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calibrate</title>
+</head>
+<style>
+    .step {
+        display: none;
+    }
+</style>
+<body>
+<div class="step" id="step-1">
+    Remove any weight from the scale before setting the tare offset.
+    Wait for at least 30 seconds.
+    <button onclick="stepOne()">Set tare offset</button>
+</div>
+<div class="step" id="step-2">
+    Place any object with known weight on the scale.
+    <input name="known_mass" type="number" step="0.01">
+    <button onclick="stepTwo()">Next</button>
+</div>
+<div class="step" id="step-3">Calibration Finished.
+    <button onclick="stepThree()">Recalibrate</button>
+</div>
+</body>
+<script>
+    addEventListener("DOMContentLoaded", (event) => {
+        document.getElementById('step-1').style.display = 'block';
+    });
+
+    function stepOne() {
+        request('/settareoffset', 'GET', null).then(res => {
+            let step2 = document.getElementById('step-2');
+            document.getElementById('step-1').style.display = 'none';
+            step2.style.display = 'block';
+            step2.innerHTML += `<div>Offset: ${res.offset}</div>`
+        });
+    }
+
+    function stepTwo() {
+        let input = document.getElementsByName('known_mass')[0];
+        let knownMass = {
+            'known_mass': parseFloat(input.value)
+        }
+        request('/setknownmass', 'POST', JSON.stringify(knownMass)).then(res => {
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-3').style.display = 'block';
+        });
+    }
+
+    function stepThree() {
+        location.reload();
+    }
+
+    function request(route, method, body) {
+        return fetch(route, {
+            method: method,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: body
+        }).then(response => response.json())
+    }
+</script>
+</html>
