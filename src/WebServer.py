@@ -24,7 +24,6 @@ class WebServer:
             request = conn.recv(1024)
 
             req = str(request)
-            print(req)
 
             # Serve index page on load
             if re.search('GET / HTTP', req):
@@ -107,28 +106,6 @@ class WebServer:
                     cal.write(ujson.dumps(scale.calibration))
 
                 machine.reset()
-
-            # Test mode
-            elif re.search('GET /test HTTP', req):
-                with open('../test.html', 'r') as test_html:
-                    conn.send('HTTP/1.1 200 OK\n')
-                    conn.send('Content-Type: text/html\n')
-                    conn.send('Connection: close\n\n')
-                    conn.sendall(test_html.read())
-
-            elif re.search('GET /gettestconfig HTTP', req):
-                conn.send('HTTP/1.1 200 OK\n')
-                conn.send('Content-Type: text/html\n')
-                conn.send('Connection: close\n\n')
-                conn.sendall(json.dumps(test.__dict__))
-
-            elif re.search('POST /settestconfig HTTP', req):
-                conn.send('HTTP/1.1 200 OK\n')
-                conn.send('Content-Type: application/json\n')
-                conn.send('Connection: close\n\n')
-                t = ujson.loads(req[req.index('{'): req.rindex('}') + 1])
-                test.on = t['on']
-                test.gas_level = t['gas_level']
 
             elif re.search('GET /resetstate HTTP', req):
                 conn.send('HTTP/1.1 200 OK\n')

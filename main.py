@@ -7,7 +7,7 @@ import ujson
 import _thread
 import network
 from machine import Timer
-import os
+import ntptime
 
 
 class Config:
@@ -101,20 +101,20 @@ while not wifi.isconnected():
 
 print('Connection Successful')
 print(wifi.ifconfig())
+ntptime.settime()
 
 sim = sim800(1)
 scale = Scale(config, test)
 server = WebServer()
 
+gc.collect()
+import nmongo
 
 def monitor_weight():
     sim.light_sleep()
     time.sleep_ms(1000)
 
     while True:
-        # if scale.curr_weight < 0.0:
-        #     scale.scale.tare()
-
         scale.raw = scale.scale.read_average()
         prv_weight = scale.curr_weight
         scale.curr_weight = scale.read()
